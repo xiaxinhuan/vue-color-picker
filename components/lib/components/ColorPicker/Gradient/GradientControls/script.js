@@ -15,7 +15,15 @@ export default {
     data() {
         return {
             disableClick: false,
+            inputDegree:this.degree,
             mouseEvents: () => {},
+        }
+    },
+    watch:{
+        degree:{
+            handler(newVal){
+                this.inputDegree = newVal
+            }
         }
     },
 
@@ -32,8 +40,8 @@ export default {
     methods: {
         mouseDownHandler(event) {
             const pointer = event.target;
-            const pointerBox = pointer.getBoundingClientRect();
-            const centerY = pointerBox.top + parseInt(8 - window.pageYOffset, 10);
+            const pointerBox = pointer.getBoundingClientRect(); 
+            const centerY = pointerBox.top + parseInt(8 - window.pageYOffset, 10) + document.documentElement.scrollTop*1;
             const centerX = pointerBox.left + parseInt(8 - window.pageXOffset, 10);
 
             return {
@@ -74,6 +82,19 @@ export default {
             }
 
             this.changeGradientControl({ degree: parseInt(gradientDegree, 10) });
+        },
+        inputDegreeChange(){
+            this.inputDegree = Number(this.inputDegree)
+            if(this.inputDegree > 360){
+                this.inputDegree = 360
+            }
+            if(this.inputDegree < 0){
+                this.inputDegree = 0
+            }
+            if(isNaN(this.inputDegree)){
+                this.inputDegree = 0
+            }
+            this.changeGradientControl({ degree: parseInt(this.inputDegree, 10) });
         }
     }
 };

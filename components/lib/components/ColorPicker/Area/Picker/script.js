@@ -42,6 +42,7 @@ export default {
         },
 
         offsetTop() {
+            // console.log('scrollY',window.scrollY)
             return (this.height - (this.value * this.height / 100) | 0) - 6;
         },
 
@@ -63,10 +64,11 @@ export default {
     methods: {
         mouseDownHandler(event) {
             const { x: elementX, y: elementY } = this.$refs.pickerAreaRef.getBoundingClientRect();
+            // console.log('sa',event.pageY,elementY,document.documentElement.scrollTop)
             const startX = event.pageX;
             const startY = event.pageY;
-            const positionX = startX - elementX;
-            const positionY = startY - elementY;
+            const positionX = startX - elementX ;
+            const positionY = startY - elementY - document.documentElement.scrollTop;
 
             const color = changePicker(positionX, positionY, this.height, this.width, this.hue);
 

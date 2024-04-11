@@ -3,7 +3,8 @@
         <div class="gradient-degrees-options" v-if="type === 'linear'">
             <div>渐变角度：</div>
             <div class="gradient-degrees-right-box">
-                <div>{{degree}}&#176;</div>
+                <!-- <div>{{degree}}&#176;</div> -->
+                <input class="degree_input" v-model="inputDegree" @change="inputDegreeChange">
                 <div
                     class="gradient-degrees"
                     @mousedown="mouseEvents"

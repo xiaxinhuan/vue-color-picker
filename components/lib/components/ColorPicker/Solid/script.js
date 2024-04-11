@@ -130,6 +130,7 @@ export default {
                 saturation,
                 value,
                 style: generateSolidStyle(red, green, blue, alpha),
+                g2Style:generateSolidStyle(red, green, blue, alpha),
             });
         },
     }

@@ -2,7 +2,7 @@ import GradientControls from './GradientControls';
 import Preview from '../Preview';
 import Area from '../Area';
 
-import { getRightValue, rgbToHsv, generateGradientStyle } from "../../../helpers";
+import { getRightValue, rgbToHsv, generateGradientStyle,generateGradientStyleG2 } from "@/lib/helpers";
 
 export default {
     name: "Gradient",
@@ -69,12 +69,18 @@ export default {
         }
     },
     computed:{
-        gradientType(){
-            return this.type
+        gradientType:{
+            get:function(){
+                return this.type
+            },
+            set:function(val){
+                return val
+            }
+            
         }
     },
     mounted() {
-        console.log('this.type',this.type)
+        // console.log('this.type',this.type)
         const { hue, saturation, value } = rgbToHsv({ red: this.colorRed, green: this.colorGreen, blue: this.colorBlue });
 
         this.colorHue = hue;
@@ -106,6 +112,7 @@ export default {
                 type: this.gradientType,
                 degree: this.gradientDegree,
                 style: generateGradientStyle(this.gradientPoints, this.gradientType, this.gradientDegree),
+                g2Style: generateGradientStyleG2(this.gradientPoints, this.gradientType, this.gradientDegree)
             });
         },
 
@@ -146,6 +153,7 @@ export default {
                 type: this.gradientType,
                 degree: this.gradientDegree,
                 style: generateGradientStyle(this.gradientPoints, this.gradientType, this.gradientDegree),
+                g2Style: generateGradientStyleG2(this.gradientPoints, this.gradientType, this.gradientDegree)
             })
         },
 
@@ -184,6 +192,7 @@ export default {
                 type: this.gradientType,
                 degree: this.gradientDegree,
                 style: generateGradientStyle(localGradientPoints, this.gradientType, this.gradientDegree),
+                g2Style: generateGradientStyleG2(this.gradientPoints, this.gradientType, this.gradientDegree)
             });
         },
 
@@ -197,6 +206,7 @@ export default {
                 type: this.gradientType,
                 degree: this.gradientDegree,
                 style: generateGradientStyle(this.gradientPoints, this.gradientType, this.gradientDegree),
+                g2Style: generateGradientStyleG2(this.gradientPoints, this.gradientType, this.gradientDegree)
             });
         },
 
@@ -213,6 +223,7 @@ export default {
                 type: this.gradientType,
                 degree: this.gradientDegree,
                 style: generateGradientStyle(this.gradientPoints, this.gradientType, this.gradientDegree),
+                g2Style: generateGradientStyleG2(this.gradientPoints, this.gradientType, this.gradientDegree)
             });
         },
 

@@ -1,6 +1,6 @@
 const utils = require('./utils');
 const pkg = require('../package.json');
-console.log(pkg.name);
+// console.log(pkg.name);
 module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],

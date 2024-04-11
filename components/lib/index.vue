@@ -6,15 +6,15 @@
         @click="colorClick"
         :style="backgroundStyle"
       ></div>
-      <div class="color_picker color_picker_panpel" ref="color_picker_panpel" v-if="renderShow" v-show="isShow">
+      <div class="color_picker color_picker_panpel color_picker_panpel_dengta" ref="color_picker_panpel" v-if="renderShow" v-show="isShow">
         <div class="picker_type" v-show="typeShow">
           <div class="select_title" @click="selecShow = !selecShow">
             {{ selectTitle }}<img src="./assets/images/arrow.png" alt="" />
           </div>
           <div class="select_poper" v-show="selecShow">
-            <p @click="typeSelect('1')">纯色模式</p>
-            <p @click="typeSelect('2')">线性渐变</p>
-            <p @click="typeSelect('3')">径向渐变</p>
+            <p @click="typeSelect('1')" :class="{'checked' : (selectTitle==='纯色模式')}">纯色模式</p>
+            <p @click="typeSelect('2')" :class="{'checked' : (selectTitle==='线性渐变')}">线性渐变</p>
+            <p @click="typeSelect('3')" :class="{'checked' : (selectTitle==='径向渐变')}">径向渐变</p>
           </div>
         </div>
         <ColorPicker
@@ -91,7 +91,7 @@ export default {
   },
   watch: {
     InCommingColor: {
-      handler(newValue, oldValue) {
+      handler(newValue) {
         // console.log('newValue',newValue)
         // 开放状态变更事件
         if (newValue) {
@@ -137,7 +137,7 @@ export default {
       },
       deep: true,
       immediate: true,
-    },
+    }
   },
   mounted() {
     document.addEventListener("click", this.bodyCloseMenus);
@@ -146,14 +146,14 @@ export default {
     document.removeEventListener("click", this.bodyCloseMenus);
   },
   methods: {
-    onChange(attrs, name) {
+    onChange(attrs) {
       // console.log("name", name, attrs);
       // if (name == "change" || name == "end") {
       //   this.$emit("colorChange", attrs.style); //双向绑定的
       //   this.$emit("change", attrs);
       // }
       if (attrs.style !== this.InCommingColor) {
-        console.log('测试啊',attrs.style)
+        // console.log('attrs',attrs)
         this.backgroundStyle = `background:${attrs.style}`
         this.$emit("colorChange", attrs.style); //双向绑定的
         this.$emit("change", attrs);
@@ -222,38 +222,52 @@ export default {
       // 浏览器的宽高
       let documentCllientWidth = document.documentElement.clientWidth
       let documentCllientHeight = document.documentElement.clientHeight
+      // 浏览器得滚动条
+      let windowScrollX = document.documentElement.scrollLeft
+      let windowScrollY = document.documentElement.scrollTop
+      let previewLeftPx = this.$refs.color_picker_content.getBoundingClientRect().left + windowScrollX
+      let previewTopPx = this.$refs.color_picker_content.getBoundingClientRect().bottom + windowScrollY
       let domRightPx = documentCllientWidth - this.$refs.color_picker_content.getBoundingClientRect().left
       let domBottomtPx = documentCllientHeight - this.$refs.color_picker_content.getBoundingClientRect().bottom
-      console.log(this.$refs.color_picker_content.getBoundingClientRect())
+      // console.log(this.$refs.color_picker_content.getBoundingClientRect())
       this.$nextTick(()=>{
+        const body = document.querySelector('body')
+        body.append(this.$refs.color_picker_panpel)
+        this.$refs.color_picker_panpel.style.left =  previewLeftPx + 'px';
+        this.$refs.color_picker_panpel.style.top =  previewTopPx + 'px'
         // 防止 color_picker_panpel 右侧超出浏览器被挡住
+        let translatexPx = 0; let translateYPx = 0;
         if(domRightPx < 300){
-          let translatexPx = 300 - domRightPx
-          this.$refs.color_picker_panpel.style.transform =  `translatex(-${translatexPx}px)`
+           translatexPx = 320 - domRightPx
         }
         if(domBottomtPx < 300){
-          this.$refs.color_picker_panpel.style.bottom =  '40px'
-        }else{
-          this.$refs.color_picker_panpel.style.top =  '36px'
+          translateYPx = 320 - domBottomtPx
         }
+        this.$refs.color_picker_panpel.style.transform =  `translate(-${translatexPx}px,-${translateYPx}px)`
         // console.log('this.$parent',this,this.$parent.$children,this.$parent.$children[0]._uid)
         // 同一个页面中只打开一个color_picker_panpel
-        let doms = this.$parent.$children.filter((obj)=>{ return (obj.$el._prevClass === "color_picker_content picker_color") && this._uid !== obj._uid})
-        // console.log('doms',doms)
-        if(doms && doms.length>0){
-          for(let i=0;i<doms.length;i++){
-            doms[i].isShow = false
-          }
-        }
-        this.isShow = !this.isShow;
+        // let domsRefs = this.$parent.$children
+        // if(domsRefs && domsRefs.length>0){
+        //   for(let i=0;i<domsRefs.length;i++){
+        //     if(domsRefs[i].$refs.color_picker_panpel){
+        //       domsRefs[i].$refs.color_picker_panpel.isShow = false
+        //       console.log(domsRefs[i].$refs.color_picker_panpel.isShow)
+        //     }
+            
+        //   }
+        // }
+        // console.log(domsRefs)
+        this.isShow = true;
       })
     },
     bodyCloseMenus(e) {
-      // console.log('e2',e)
-      let self = this;
-      if (self.isShow == true) {
-        self.isShow = false;
-      }
+      // console.log('sasa',e)
+      if(!this.$refs.color_picker_panpel) return false;
+      let self = this;       
+      var elem = e.target;
+      var targetArea = this.$refs.color_picker_panpel;
+      // 点击色板外面的区域关闭本色板
+      if(!targetArea.contains(elem)) self.isShow = false;
     },
   },
 };
@@ -295,6 +309,7 @@ p {
     .select_title {
       cursor: pointer;
       width: 100px;
+      color: #252525;
       img {
         width: 14px;
         height: 14px;
@@ -320,6 +335,10 @@ p {
         line-height: 22px;
         padding: 9px 0 9px 16px;
         width: 120px;
+        color: #8D8DA7;
+      }
+      p.checked{
+        color: #252525;
       }
     }
   }

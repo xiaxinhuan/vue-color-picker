@@ -94,6 +94,10 @@
             .gradient-degrees-right-box{
                 display: flex;
                 align-items: center;
+                .degree_input{
+                    width: 30px;
+                    text-align: center;
+                }
             }
         }
     }
@@ -199,6 +203,7 @@
                         background-position: 50% 50%;
                         border-radius: 10px;
                         padding: 0 7px;
+                        box-sizing:border-box;
 
                         .alpha-mask {
                             width: 100%;

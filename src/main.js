@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 
-import vueUiDemo from 'vue-color-picker-gradient';
+import vueUiDemo from 'dengta-color-picker';
 Vue.use(vueUiDemo);
 Vue.config.productionTip = false;
 

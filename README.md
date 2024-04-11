@@ -9,15 +9,15 @@ yarn install
 
 
 ## 二、组件库使用
-npm install vue-color-picker-gradient -S
+npm install dengta-color-picker 
 
 ### 一、全局引入
 ```
 // 在main.js中全局注册
 
-import vueColorPickerGradient from 'vue-color-picker-gradient'
-import 'vue-color-picker-gradient/lib/index/style.css'
-Vue.use(vueColorPickerGradient)
+import dengtaColorPicker from 'dengta-color-picker'
+import 'dengta-color-picker/lib/index/style.css'
+Vue.use(dengtaColorPicker)
 ```
 
 #### 模板中使用方式：
