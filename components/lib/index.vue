@@ -35,7 +35,7 @@ import { ColorPicker } from "./index.js";
 import { hexToRgb,colorStylestringToObj } from "./helpers";
 
 export default {
-  name: "VueColorPicker",
+  name: "App",
   model: {
     prop: "InCommingColor",
     event: "colorChange",
@@ -152,6 +152,7 @@ export default {
       //   this.$emit("colorChange", attrs.style); //双向绑定的
       //   this.$emit("change", attrs);
       // }
+      console.log('attrs',attrs)
       if (attrs.style !== this.InCommingColor) {
         // console.log('attrs',attrs)
         this.backgroundStyle = `background:${attrs.style}`
@@ -283,7 +284,7 @@ p {
   position: relative;
 }
 .color_picker_box {
-  width: 30px;
+  width: 100%;
 }
 .preview_color {
   width: 30px;
@@ -293,7 +294,6 @@ p {
 }
 .color_picker {
   position: absolute;
-  left: 0;
   z-index: 2053;
   background: #fff;
   border: 1px solid #ebeef5;
