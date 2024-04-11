@@ -12,3 +12,4 @@ export { default as calculateDegree } from './calculateDegree';
 export { default as getRightValue } from './getRightValue';
 export { default as colorStylestringToObj } from './colorStylestringToObj';
 export * from './generateStyles';
+export * from './generateStylesG2';

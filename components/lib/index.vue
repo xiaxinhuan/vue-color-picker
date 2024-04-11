@@ -35,7 +35,7 @@ import { ColorPicker } from "./index.js";
 import { hexToRgb,colorStylestringToObj } from "./helpers";
 
 export default {
-  name: "VueColorPicker",
+  name: "App",
   model: {
     prop: "InCommingColor",
     event: "colorChange",
@@ -152,9 +152,8 @@ export default {
       //   this.$emit("colorChange", attrs.style); //双向绑定的
       //   this.$emit("change", attrs);
       // }
+      console.log('attrs',attrs)
       if (attrs.style !== this.InCommingColor) {
-        console.log('测试啊',attrs.style)
-        this.backgroundStyle = `background:${attrs.style}`
         this.$emit("colorChange", attrs.style); //双向绑定的
         this.$emit("change", attrs);
       }
@@ -222,10 +221,14 @@ export default {
       // 浏览器的宽高
       let documentCllientWidth = document.documentElement.clientWidth
       let documentCllientHeight = document.documentElement.clientHeight
+      let previewLeftPx = this.$refs.color_picker_content.getBoundingClientRect().left
+      let previewTopPx = this.$refs.color_picker_content.getBoundingClientRect().top
       let domRightPx = documentCllientWidth - this.$refs.color_picker_content.getBoundingClientRect().left
       let domBottomtPx = documentCllientHeight - this.$refs.color_picker_content.getBoundingClientRect().bottom
-      console.log(this.$refs.color_picker_content.getBoundingClientRect())
       this.$nextTick(()=>{
+        const body = document.querySelector('body')
+        body.append(this.$refs.color_picker_panpel)
+        this.$refs.color_picker_panpel.style.left =  previewLeftPx + 'px'
         // 防止 color_picker_panpel 右侧超出浏览器被挡住
         if(domRightPx < 300){
           let translatexPx = 300 - domRightPx
@@ -234,7 +237,7 @@ export default {
         if(domBottomtPx < 300){
           this.$refs.color_picker_panpel.style.bottom =  '40px'
         }else{
-          this.$refs.color_picker_panpel.style.top =  '36px'
+          this.$refs.color_picker_panpel.style.top =  (36 + previewTopPx*1) + 'px'
         }
         // console.log('this.$parent',this,this.$parent.$children,this.$parent.$children[0]._uid)
         // 同一个页面中只打开一个color_picker_panpel
@@ -249,11 +252,12 @@ export default {
       })
     },
     bodyCloseMenus(e) {
-      // console.log('e2',e)
-      let self = this;
-      if (self.isShow == true) {
-        self.isShow = false;
-      }
+      if(!this.$refs.color_picker_panpel) return false;
+      let self = this;       
+      var elem = e.target;
+      var targetArea = this.$refs.color_picker_panpel;
+      // 点击色板外面的区域关闭本色板
+      if(!targetArea.contains(elem)) self.isShow = false;
     },
   },
 };
@@ -269,7 +273,7 @@ p {
   position: relative;
 }
 .color_picker_box {
-  width: 30px;
+  width: 100%;
 }
 .preview_color {
   width: 30px;
@@ -279,7 +283,6 @@ p {
 }
 .color_picker {
   position: absolute;
-  left: 0;
   z-index: 2053;
   background: #fff;
   border: 1px solid #ebeef5;
